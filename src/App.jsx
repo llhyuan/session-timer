@@ -1,6 +1,8 @@
 import { useReducer, useState } from 'react';
 import reducer, { initialTimer } from './reducer/reducer';
-import Input from './reducer/components/Input';
+
+import Input from './components/Input';
+import Alarm from './components/Alarm';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 
@@ -9,6 +11,7 @@ function App() {
   const [timer, dispatch] = useReducer(reducer, initialTimer);
   const [intervalId, setIntervalId] = useState(null);
   const intervalParameter = useRef(0);
+  const alertSoundRef = useRef(null);
   const [realtime, setRealtime] = useState({
     hour: '00',
     minute: '00',
@@ -52,6 +55,7 @@ function App() {
       timerStatus !== 'initial' &&
       intervalParameter.current.inSession !== timer.inSession
     ) {
+      alertSoundRef.current.play();
       alert(timer.inSession ? 'Start a session.' : 'Time for a break.');
     }
     intervalParameter.current = timer;
@@ -101,7 +105,7 @@ function App() {
         <div className='bg-[#363130] w-[70vw] max-w-[700px] min-w-[400px] rounded-2xl text-orange-600'>
           <div className='font-mono p-3 max-w-[850px]'>
             <div className='flex items-center selection:bg-[#DEE7EA] selection:text-[#363130]'>
-              <p className='text-gray-300 text-[1.8rem]'>
+              <p className='text-gray-300 text-[1.8rem] w-[50%]'>
                 {realtime.hour}
                 <span className='animate-blink'>:</span>
                 {realtime.minute}
@@ -109,11 +113,12 @@ function App() {
               </p>
               {timer.inSession ? (
                 <svg
+                  id='timer-label'
                   xmlns='http://www.w3.org/2000/svg'
                   height='1.5em'
                   viewBox='0 0 320 512'
                   className={
-                    'mx-auto ' +
+                    'mr-auto ' +
                     (timerStatus === 'play' ? 'fill-lime-300' : 'fill-lime-700')
                   }
                 >
@@ -121,6 +126,7 @@ function App() {
                 </svg>
               ) : (
                 <svg
+                  id='timer-label'
                   xmlns='http://www.w3.org/2000/svg'
                   height='1.5em'
                   viewBox='0 0 320 512'
@@ -132,59 +138,64 @@ function App() {
                   <path d='M64 32C28.7 32 0 60.7 0 96V288 448c0 17.7 14.3 32 32 32s32-14.3 32-32V320h95.3L261.8 466.4c10.1 14.5 30.1 18 44.6 7.9s18-30.1 7.9-44.6L230.1 309.5C282.8 288.1 320 236.4 320 176c0-79.5-64.5-144-144-144H64zM176 256H64V96H176c44.2 0 80 35.8 80 80s-35.8 80-80 80z' />
                 </svg>
               )}
-              <div onClick={handleClickPlay}>
-                <svg
-                  id='play'
-                  xmlns='http://www.w3.org/2000/svg'
-                  height='1.5em'
-                  viewBox='0 0 384 512'
-                  className={
-                    'mr-8 hover:fill-green-300 ' +
-                    (timerStatus === 'play'
-                      ? 'fill-green-300'
-                      : 'fill-gray-500')
-                  }
-                >
-                  <path d='M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z' />
-                </svg>
-              </div>
-              <div onClick={handleClickPause}>
-                <svg
-                  id='pause'
-                  xmlns='http://www.w3.org/2000/svg'
-                  height='1.5em'
-                  viewBox='0 0 320 512'
-                  className={
-                    'mr-8 fill-gray-500 hover:fill-green-300 ' +
-                    (timerStatus === 'pause'
-                      ? 'fill-green-300'
-                      : 'fill-gray-500')
-                  }
-                >
-                  <path d='M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z' />
-                </svg>
-              </div>
-              <div onClick={handleClickReset}>
-                <svg
-                  id='reset'
-                  xmlns='http://www.w3.org/2000/svg'
-                  height='1.5em'
-                  viewBox='0 0 512 512'
-                  className='mr-4 fill-gray-500 transition-all ease-in duration-100 hover:fill-gray-300 hover:rotate-[-40deg]'
-                >
-                  <path d='M48.5 224H40c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L98.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L185 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H48.5z' />
-                </svg>
+              <div className='w-[50%]'>
+                <div className='ml-auto flex justify-between w-[75%] max-w-[160px]'>
+                  <div onClick={handleClickPlay}>
+                    <svg
+                      id='play'
+                      xmlns='http://www.w3.org/2000/svg'
+                      height='1.5em'
+                      viewBox='0 0 384 512'
+                      className={
+                        'hover:fill-green-300 ' +
+                        (timerStatus === 'play'
+                          ? 'fill-green-300'
+                          : 'fill-gray-500')
+                      }
+                    >
+                      <path d='M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z' />
+                    </svg>
+                  </div>
+                  <div onClick={handleClickPause}>
+                    <svg
+                      id='pause'
+                      xmlns='http://www.w3.org/2000/svg'
+                      height='1.5em'
+                      viewBox='0 0 320 512'
+                      className={
+                        'fill-gray-500 hover:fill-green-300 ' +
+                        (timerStatus === 'pause'
+                          ? 'fill-green-300'
+                          : 'fill-gray-500')
+                      }
+                    >
+                      <path d='M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z' />
+                    </svg>
+                  </div>
+                  <div onClick={handleClickReset}>
+                    <svg
+                      id='reset'
+                      xmlns='http://www.w3.org/2000/svg'
+                      height='1.5em'
+                      viewBox='0 0 512 512'
+                      className='fill-gray-500 transition-all ease-in duration-100 hover:fill-gray-300 hover:rotate-[-40deg]'
+                    >
+                      <path d='M48.5 224H40c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L98.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L185 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H48.5z' />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
+            <Alarm ref={alertSoundRef} />
             <div
-              id='timer-left'
+              id='time-left'
               className='time-remain text-[6rem] w-fit mx-auto selection:bg-orange-600 selection:text-[#363130]'
             >
               {timer.inSession
                 ? displayTime(timer.sessionRemain)
                 : displayTime(timer.breakRemain)}
             </div>
-            <div className='text-[1.5rem]'>
+            <div className='text-[1.5rem] mx-auto max-w-[510px]'>
               <Input label={'Break Length:'} dispatch={dispatch} id='break'>
                 {timer.break}
               </Input>

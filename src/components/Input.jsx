@@ -4,7 +4,7 @@ export default function Input({ label, children, dispatch, id }) {
       <p id={`${id}-label`} className='text-gray-300 selection:bg-gray-300 selection:text-[#363130]'>
         {label}
       </p>
-      <div className='flex justify-center items-center text-[1.8rem]'>
+      <div className='flex justify-around items-center text-[1.8rem] w-[40%]'>
         <p
           id={`${id}-decrement`}
           className='px-3 text-[2rem] text-orange-700 selection:bg-orange-700 selection:text-[#363130] hover:text-orange-600 cursor-pointer '
