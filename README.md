@@ -30,8 +30,8 @@ Session Timer helps you riding high on your productivity momentum. Also, it remi
 
 ### Screenshots
 
-<img src="./public/screenshot1.png" width="350">
-<img src="./public/screenshot2.png" width="350">
+<img src="./public/screenshot-1.png" width="350">
+<img src="./public/screenshot-2.png" width="350">
 
 ### Built with
 
