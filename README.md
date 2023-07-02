@@ -26,19 +26,17 @@ Session Timer helps you riding high on your productivity momentum. Also, it remi
 
 ### Links
 
-- Live Site URL: [Github page](https://llhyuan.github.io/markdown-previewer/)
+- Live Site URL: [Github page](https://llhyuan.github.io/session-timer/)
 
 ### Screenshots
 
-<img src="./public/screenshot1.png" width="250">
+<img src="./public/screenshot1.png" width="300">
 <img src="./public/screenshot2.png" width="300">
-<img src="./public/screenshot3.png" width="350">
 
 ### Built with
 
 - React
 - Tailwind Css
-- Css variables
 - Flexbox
 - Mobile-first workflow
 - [React](https://reactjs.org/) - JS library
@@ -46,4 +44,3 @@ Session Timer helps you riding high on your productivity momentum. Also, it remi
 ## Author
 
 - LinkedIn - [Hangyuan Liu](www.linkedin.com/in/hangyuan-liu-a9282718b)
-- Frontend Mentor - [@llhyuan](https://www.frontendmentor.io/profile/llhyuan)
