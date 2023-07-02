@@ -101,11 +101,11 @@ function App() {
 
   return (
     <div className='min-h-[100vh] w-full bg-gray-400 flex justify-center items-center'>
-      <div className='border-solid border-[0.5rem] border-[#363130] rounded-3xl p-8 bg-[#DEE7EA]'>
-        <div className='bg-[#363130] w-[70vw] max-w-[700px] min-w-[400px] rounded-2xl text-orange-600'>
+      <div className='border-solid border-[0.5rem] border-[#363130] rounded-3xl p-6 small:p-8 bg-[#DEE7EA]'>
+        <div className='bg-[#363130] w-[70vw] max-w-[700px] min-w-[300px] rounded-2xl text-orange-600'>
           <div className='font-mono p-3 max-w-[850px]'>
             <div className='flex items-center selection:bg-[#DEE7EA] selection:text-[#363130]'>
-              <p className='text-gray-300 text-[1.8rem] w-[50%]'>
+              <p className='text-gray-300 text-[1.5rem] small:text-[1.8rem] w-[50%]'>
                 {realtime.hour}
                 <span className='animate-blink'>:</span>
                 {realtime.minute}
@@ -189,7 +189,7 @@ function App() {
             <Alarm ref={alertSoundRef} />
             <div
               id='time-left'
-              className='time-remain text-[6rem] w-fit mx-auto selection:bg-orange-600 selection:text-[#363130]'
+              className='time-remain text-[5rem] small:text-[6rem] w-fit mx-auto selection:bg-orange-600 selection:text-[#363130]'
             >
               {timer.inSession
                 ? displayTime(timer.sessionRemain)

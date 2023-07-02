@@ -1,5 +1,5 @@
 import { useState, forwardRef } from 'react';
-import alert from '../../assets/alarm.m4a';
+import alert from '../assets/alarm.m4a';
 
 const Alarm = forwardRef(function Alarm(_, ref) {
   const [mute, toggleMute] = useState(false);
